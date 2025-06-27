@@ -5,6 +5,7 @@ import LocationPredict from './pages/LocationPredict.jsx';
 import TestMap from './pages/TestMap.jsx';
 import RevenueForecast from './pages/RevenueForecast.jsx';
 import Predict from './pages/predict.jsx';
+import Optimization from './pages/Optimization.jsx';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/plant-predict" element={<LocationPredict />} />
         <Route path="/test-map" element={<TestMap />} />
         <Route path="/revenue" element={<RevenueForecast />} />
+        <Route path="/optimization" element={<Optimization />} />
       </Routes>
     </div>
   );

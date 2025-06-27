@@ -17,6 +17,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 const navItems = [
   { label: 'Home', path: '/' },
   { label: 'Plant Predict', path: '/plant-predict' },
+  { label: 'Grid Optimization', path: '/optimization' },
   { label: 'Predict', path: '/predict' },
 ];
 
