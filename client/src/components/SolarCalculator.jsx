@@ -118,8 +118,8 @@ function SolarCalculator() {
   };
 
   return (
-    <Box sx={{ p: 4, maxWidth: '1200px', mx: 'auto' }} className="bg-white shadow-lg rounded-lg">
-      <Typography variant="h5" className="text-center font-bold text-gray-800 mb-4">
+    <Box sx={{ p: 4, maxWidth: '1200px', mx: 'auto', backgroundColor: '#fff', borderRadius: 2, boxShadow: 3 }}>
+      <Typography variant="h5" align="center" gutterBottom fontWeight="bold">
         Solar Energy Calculator
       </Typography>
 
@@ -146,17 +146,27 @@ function SolarCalculator() {
             <TextField label="Performance Ratio (%)" name="performanceRatio" value={formData.performanceRatio} onChange={handleChangeInput} required fullWidth type="number" />
           </Grid>
           <Grid item xs={12} md={4}>
-            <Box display="flex">
+            <Box display="flex" gap={1} alignItems="center">
               <Tooltip title="Leave empty to calculate this">
-                <TextField label="Units Generated (kWh)" name="unitsGenerated" value={formData.unitsGenerated} onChange={handleChangeInput} fullWidth type="number" />
+                <TextField label="Units Generated (kWh)" name="unitsGenerated" value={formData.unitsGenerated} onChange={handleChangeInput} fullWidth type="number" sx={{ height: '56px' }} />
               </Tooltip>
-              <Button variant="outlined" onClick={() => setOpenModal(true)} sx={{ ml: 1 }}>Calculate Units</Button>
+              <Button variant="outlined" onClick={() => setOpenModal(true)} sx={{
+                height: '56px',
+                minWidth: '110px',
+                whiteSpace: 'nowrap',
+                fontWeight: 600,
+              }}>Calculate</Button>
             </Box>
           </Grid>
           <Grid item xs={12} md={4}>
             <FormControl fullWidth>
-              <InputLabel>Time Period</InputLabel>
-              <Select value={formData.timePeriod} onChange={handleTimePeriodChange}>
+              <InputLabel id="time-period-label">Time Period</InputLabel>
+              <Select
+                labelId="time-period-label"
+                value={formData.timePeriod}
+                label="Time Period"
+                onChange={handleTimePeriodChange}
+              >
                 <MenuItem value="day">Day</MenuItem>
                 <MenuItem value="week">Week</MenuItem>
                 <MenuItem value="month">Month</MenuItem>
@@ -172,10 +182,10 @@ function SolarCalculator() {
       {/* Modal for Appliance Inputs */}
       <Modal open={openModal} onClose={() => setOpenModal(false)}>
         <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', bgcolor: 'background.paper', p: 4, width: '90%', maxWidth: 1000, maxHeight: '90vh', overflowY: 'auto' }}>
-          <Typography variant="h6" className="mb-4">Appliance Energy Usage</Typography>
+          <Typography variant="h6" gutterBottom>Appliance Energy Usage</Typography>
           <FormControl fullWidth sx={{ mb: 3 }}>
-            <InputLabel>Time Period</InputLabel>
-            <Select value={modalTimePeriod} onChange={handleModalTimePeriodChange}>
+            <InputLabel id="modal-time-period">Time Period</InputLabel>
+            <Select labelId="modal-time-period" value={modalTimePeriod} label="Time Period" onChange={handleModalTimePeriodChange}>
               <MenuItem value="day">Day</MenuItem>
               <MenuItem value="week">Week</MenuItem>
               <MenuItem value="month">Month</MenuItem>
@@ -210,35 +220,16 @@ function SolarCalculator() {
                       />
                     </TableCell>
                     <TableCell>
-                      <TextField
-                        type="number"
-                        value={item.quantity}
-                        onChange={(e) => handleApplianceChange(listSetter, list, index, 'quantity', e.target.value)}
-                        fullWidth
-                      />
+                      <TextField type="number" value={item.quantity} onChange={(e) => handleApplianceChange(listSetter, list, index, 'quantity', e.target.value)} fullWidth />
                     </TableCell>
                     <TableCell>
-                      <TextField
-                        type="number"
-                        value={item.wattage}
-                        onChange={(e) => handleApplianceChange(listSetter, list, index, 'wattage', e.target.value)}
-                        fullWidth
-                      />
+                      <TextField type="number" value={item.wattage} onChange={(e) => handleApplianceChange(listSetter, list, index, 'wattage', e.target.value)} fullWidth />
                     </TableCell>
                     <TableCell>
-                      <TextField
-                        type="number"
-                        value={item.usageTime}
-                        onChange={(e) => handleApplianceChange(listSetter, list, index, 'usageTime', e.target.value)}
-                        fullWidth
-                      />
+                      <TextField type="number" value={item.usageTime} onChange={(e) => handleApplianceChange(listSetter, list, index, 'usageTime', e.target.value)} fullWidth />
                     </TableCell>
                     <TableCell>
-                      <Select
-                        value={item.timeUnit}
-                        onChange={(e) => handleApplianceChange(listSetter, list, index, 'timeUnit', e.target.value)}
-                        fullWidth
-                      >
+                      <Select value={item.timeUnit} onChange={(e) => handleApplianceChange(listSetter, list, index, 'timeUnit', e.target.value)} fullWidth>
                         <MenuItem value="minutes">Minutes</MenuItem>
                         <MenuItem value="hours">Hours</MenuItem>
                       </Select>
@@ -256,7 +247,7 @@ function SolarCalculator() {
             </TableBody>
           </Table>
 
-          <Button variant="outlined" startIcon={<AddIcon />} onClick={addCustomAppliance} className="my-4">
+          <Button variant="outlined" startIcon={<AddIcon />} onClick={addCustomAppliance} sx={{ my: 2 }}>
             Add Custom Appliance
           </Button>
 
@@ -269,8 +260,8 @@ function SolarCalculator() {
 
       {/* Results Section */}
       {result && (
-        <Box className="mt-6 p-4 bg-gray-100 rounded-lg">
-          <Typography variant="h6" className="mb-2 font-semibold">Results</Typography>
+        <Box mt={6} p={3} bgcolor="#f9f9f9" borderRadius={2}>
+          <Typography variant="h6" gutterBottom>Results</Typography>
           <Typography>Units Generated: {result.unitsGenerated} kWh/{result.timePeriod}</Typography>
           <Typography>Module Count: {result.moduleCount}</Typography>
           <Typography>Module Area: {result.moduleArea} m²</Typography>
@@ -278,7 +269,7 @@ function SolarCalculator() {
 
           {applianceReport?.length > 0 && (
             <Box mt={4}>
-              <Typography variant="subtitle1" className="mb-2 font-semibold">Appliance Usage Report</Typography>
+              <Typography variant="subtitle1" gutterBottom>Appliance Usage Report</Typography>
               <Table>
                 <TableHead>
                   <TableRow>

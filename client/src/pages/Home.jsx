@@ -1,10 +1,12 @@
 import { Link } from 'react-router-dom';
 import { Button } from '@mui/material';
 import ArrowUpward from '@mui/icons-material/ArrowUpward';
+import Navbar from '../components/Navbar';
 
 function Home() {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-r from-blue-500 to-green-500 text-white relative">
+      <Navbar/>
       {/* GRIDVISION in top left */}
       <div className="absolute top-4 left-4">
         <h1 className="text-3xl md:text-4xl font-bold">GRIDVISION</h1>
