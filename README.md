@@ -63,15 +63,8 @@ Follow these steps to set up **GridVision** locally:
    npm install
    npm run dev
    ```
-
----
-
-## 📜 License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please read the [Contributing Guidelines](CONTRIBUTING.md) for details on how to get started.
+Contributions are welcome!
