@@ -47,14 +47,14 @@ export default function Predict() {
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'gray-100' }}>
       <Navbar />
-      <Box sx={{ maxWidth: '1200px', mx: 'auto', px: { xs: 2, md: 4 }, py: 6 }}>
+      <Box sx={{ maxWidth: '1200px', mx: 'auto', px: { xs: 2, md: 4 }, py: 3 }}>
 
         <Weather/>
 
         <SolarCalculator/>
 
         {/* Full-width form */}
-        <Paper
+        {/* <Paper
           elevation={3}
           sx={{
             p: 4,
@@ -71,11 +71,11 @@ export default function Predict() {
             </Typography>
             <PredictionForm />
           </Box>
-        </Paper>
+        </Paper> */}
 
 
         {/* Cards section */}
-        <Grid container spacing={3} mb={6}>
+        {/* <Grid container spacing={3} mb={6}>
           <Grid item xs={12} md={6} sx={{ width: '49%' }} >
             <Paper
               elevation={3}
@@ -134,10 +134,10 @@ export default function Predict() {
               </Typography>
             </Paper>
           </Grid>
-        </Grid>
+        </Grid> */}
 
         {/* Chart section */}
-        <Paper
+        {/* <Paper
           elevation={3}
           sx={{
             p: { xs: 4, md: 6 },
@@ -167,7 +167,7 @@ export default function Predict() {
               />
             </LineChart>
           </ResponsiveContainer>
-        </Paper>
+        </Paper> */}
       </Box>
     </Box>
 

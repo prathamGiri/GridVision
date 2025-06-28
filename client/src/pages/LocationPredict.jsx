@@ -1,5 +1,4 @@
 import { useState, useRef } from 'react';
-import { useSelector } from 'react-redux';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import {
   Box,
@@ -192,13 +191,10 @@ export default function LocationPredict() {
         },
       },
       tooltip: {
-        callbacks: {
-          label: function (context) {
-            const unit = context.dataset.label.includes('Cumulative') ? 'kWh' :
-              context.dataset.label.includes('Power') ? 'kW' : 'Mu';
-            return `${context.dataset.label}: ${context.parsed.y} ${unit}`;
-          },
-        },
+        enabled: false, // Disable tooltips to hide values
+      },
+      datalabels: {
+        display: false, // Ensure no data labels are shown
       },
     },
   });
@@ -207,65 +203,75 @@ export default function LocationPredict() {
     <Box className="min-h-screen bg-gray-100">
       <Navbar />
 
-      <Box className="flex flex-col md:flex-row w-full h-[calc(100vh-64px)]">
-        {/* Map Section */}
-        <Box className="md:w-1/2 w-full h-full">
-          <MapContainer
-            center={[22.5, 78.9]}
-            zoom={5}
-            style={{ height: '100%', width: '100%' }}
-            whenCreated={(mapInstance) => { mapRef.current = mapInstance; }}
-          >
-            <TileLayer
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              attribution="© OpenStreetMap contributors"
-            />
-            {solarPlants.map((plant) => (
-              <Marker
-                key={plant.id}
-                position={[plant.lat, plant.lng]}
-                icon={customIcon}
-                eventHandlers={{ click: () => handleMarkerClick(plant) }}
-              >
-                <Popup>{plant.name}</Popup>
-              </Marker>
-            ))}
-          </MapContainer>
+      {/* Map Section - Full Page */}
+      <Box className="w-full h-[calc(100vh-64px)] relative">
+        <MapContainer
+          center={[22, 95]} // Adjusted to center India on the left side
+          zoom={5}
+          style={{ height: '100%', width: '100%' }}
+          whenCreated={(mapInstance) => { mapRef.current = mapInstance; }}
+        >
+          <TileLayer
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution="© OpenStreetMap contributors"
+          />
+          {solarPlants.map((plant) => (
+            <Marker
+              key={plant.id}
+              position={[plant.lat, plant.lng]}
+              icon={customIcon}
+              eventHandlers={{ click: () => handleMarkerClick(plant) }}
+            >
+              <Popup>{plant.name}</Popup>
+            </Marker>
+          ))}
+        </MapContainer>
 
-          {selectedPlant && (
-            <Box className="absolute bottom-4 left-4 bg-white p-4Mixed reality rounded-lg shadow-md max-w-xs z-[1000]">
-              <Typography variant="h6" fontWeight={600}>{selectedPlant.name}</Typography>
-              <Typography variant="body2">📍 {selectedPlant.location}</Typography>
-              <Typography variant="body2">⚡ {selectedPlant.capacity} MW</Typography>
-              <Typography variant="body2">🌞 Efficiency: {selectedPlant.efficiency}%</Typography>
-              <Typography variant="body2">🧭 Lat: {selectedPlant.lat}, Lng: {selectedPlant.lng}</Typography>
-            </Box>
-          )}
-        </Box>
+        {/* Plant Details Overlay - Bottom Left */}
+        {selectedPlant && (
+          <Box className="absolute bottom-4 left-4 bg-white p-4 rounded-lg shadow-md max-w-xs z-[1000]">
+            <Typography variant="h6" fontWeight={600}>{selectedPlant.name}</Typography>
+            <Typography variant="body2">📍 {selectedPlant.location}</Typography>
+            <Typography variant="body2">⚡ {selectedPlant.capacity} MW</Typography>
+            <Typography variant="body2">🌞 Efficiency: {selectedPlant.efficiency}%</Typography>
+            <Typography variant="body2">🧭 Lat: {selectedPlant.lat}, Lng: {selectedPlant.lng}</Typography>
+          </Box>
+        )}
 
-        {/* Data Section */}
-        <Box className="md:w-1/2 w-full p-4 overflow-y-auto bg-white">
-          <Paper className="mb-6 p-4 shadow-lg rounded-xl">
+        {/* Overlay Container for Graphs and Carbon Credit Estimator - Right Side */}
+        {/* <Box
+          className="absolute top-4 right-4 w-[700px] max-h-[calc(100vh-80px)] overflow-y-auto bg-none p-2 shadow-lg rounded-xl z-[1000]"
+          sx={{ scrollbarWidth: 'thin' }}
+        > */}
+        <Box
+          className="absolute top-0 mb-0 right-4 w-[45%] max-h-[calc(100vh-64px)] overflow-y-auto bg-none p-2 z-[1000] scrollbar-hide"
+          sx={{
+            '&::-webkit-scrollbar': {
+              display: 'none',
+            },
+            msOverflowStyle: 'none', // IE and Edge
+            scrollbarWidth: 'none',  // Firefox
+          }}
+        >
+          <Paper className="mb-6 p-4 shadow-md rounded-xl">
             <Typography variant="h6" fontWeight={600} className="mb-4">
               {selectedPlant ? `${selectedPlant.name} - Today’s Hourly Prediction` : 'Today’s Hourly Prediction (Select a plant)'}
             </Typography>
-            <Box style={{ height: 300 }}>
+            <Box style={{ height: 250 }}>
               <Line data={hourlyData} options={chartOptions('today')} />
             </Box>
           </Paper>
 
-          <Paper className="mb-6 p-4 shadow-lg rounded-xl">
+          <Paper className="mb-6 p-4 shadow-md rounded-xl">
             <Typography variant="h6" fontWeight={600} className="mb-4">
               {selectedPlant ? `${selectedPlant.name} - 7-Day Forecast` : '7-Day Forecast (Select a plant)'}
             </Typography>
-            <Box style={{ height: 300 }}>
+            <Box style={{ height: 250 }}>
               <Line data={weeklyData} options={chartOptions('7days')} />
             </Box>
           </Paper>
 
-          {/* <Paper className="p-4 shadow-lg rounded-xl"> */}
-            <CarbonCreditEstimator predictedGeneration={carbonData} />
-          {/* </Paper> */}
+          <CarbonCreditEstimator predictedGeneration={carbonData} />
         </Box>
       </Box>
     </Box>

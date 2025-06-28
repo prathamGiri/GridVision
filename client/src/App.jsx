@@ -12,7 +12,7 @@ function App() {
     <div className="min-h-screen bg-gray-100">
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path='/predict' element={<Predict />} />
+        <Route path='/calculator' element={<Predict />} />
         <Route path="/plant-predict" element={<LocationPredict />} />
         <Route path="/test-map" element={<TestMap />} />
         <Route path="/revenue" element={<RevenueForecast />} />
